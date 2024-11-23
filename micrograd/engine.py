@@ -2,7 +2,7 @@
 class Value:
     """ stores a single scalar value and its gradient """
 
-    def __init__(self, data, _children=(), _op=''):
+    def __init__(self, data, _children=(), _op=''):  #_op only for visualisation purposes
         self.data = data
         self.grad = 0
         # internal variables used for autograd graph construction
@@ -26,7 +26,7 @@ class Value:
         out = Value(self.data * other.data, (self, other), '*')
 
         def _backward():
-            self.grad += other.data * out.grad
+            self.grad += other.data * out.grad # += because of the multivar case of the chain rule (accumulating contributions)
             other.grad += self.data * out.grad
         out._backward = _backward
 
